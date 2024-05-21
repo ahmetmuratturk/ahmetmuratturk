@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Gallery</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .gallery {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .controls {
+            margin: 10px;
+        }
+        iframe {
+            width: 600px;
+            height: 800px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery">
+        <div class="controls">
+            <button id="prev">Previous</button>
+            <button id="next">Next</button>
+        </div>
+        <iframe id="pdf-viewer" src=""></iframe>
+    </div>
+    <script>
+        let currentIndex = 0;
+        let pdfFiles = [];
+
+        async function fetchPDFs() {
+            const response = await fetch('/pdfs');
+            pdfFiles = await response.json();
+            if (pdfFiles.length > 0) {
+                displayPDF(currentIndex);
+            }
+        }
+
+        function displayPDF(index) {
+            const pdfViewer = document.getElementById('pdf-viewer');
+            pdfViewer.src = `/certificates/${pdfFiles[index]}`;
+        }
+
+        document.getElementById('prev').addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                displayPDF(currentIndex);
+            }
+        });
+
+        document.getElementById('next').addEventListener('click', () => {
+            if (currentIndex < pdfFiles.length - 1) {
+                currentIndex++;
+                displayPDF(currentIndex);
+            }
+        });
+
+        fetchPDFs();
+    </script>
+</body>
+</html>
