@@ -38,19 +38,15 @@
     </div>
     <script>
         let currentIndex = 0;
-        let pdfFiles = [];
-
-        async function fetchPDFs() {
-            const response = await fetch('/pdfs');
-            pdfFiles = await response.json();
-            if (pdfFiles.length > 0) {
-                displayPDF(currentIndex);
-            }
-        }
+        let pdfFiles = [
+            'certificates/Annex1_Transcript.pdf',
+            'certificates/Annex2_BSC.pdf',
+            // Add more PDF paths here
+        ];
 
         function displayPDF(index) {
             const pdfViewer = document.getElementById('pdf-viewer');
-            pdfViewer.src = `/certificates/${pdfFiles[index]}`;
+            pdfViewer.src = pdfFiles[index];
         }
 
         document.getElementById('prev').addEventListener('click', () => {
@@ -67,7 +63,7 @@
             }
         });
 
-        fetchPDFs();
+        displayPDF(currentIndex);
     </script>
 </body>
 </html>
